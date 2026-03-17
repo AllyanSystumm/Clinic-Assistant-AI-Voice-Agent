@@ -1,0 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model Appointment {
+  id           Int      @id @default(autoincrement())
+  patient_name String
+  reason       String?
+  start_time   DateTime
+  canceled     Boolean  @default(false)
+  created_at   DateTime @default(now())
+}

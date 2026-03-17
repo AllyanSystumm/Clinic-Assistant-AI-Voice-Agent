@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Connection Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .success { background-color: #d4edda; }
+        .error { background-color: #f8d7da; }
+        pre { background: #f8f9fa; padding: 10px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔗 API Connection Test</h1>
+    
+    <div id="results"></div>
+    
+    <button onclick="testAPI()">Test API Connection</button>
+    <button onclick="testSchedule()">Test Schedule Appointment</button>
+    
+    <script>
+        const API_URL = "https://balustered-oleomargaric-carleen.ngrok-free.dev";
+        
+        function log(message, type = 'info') {
+            const results = document.getElementById('results');
+            const div = document.createElement('div');
+            div.className = `test ${type}`;
+            div.innerHTML = `<pre>${new Date().toLocaleTimeString()}: ${message}</pre>`;
+            results.appendChild(div);
+        }
+        
+        async function testAPI() {
+            log('🔄 Testing list_appointments endpoint...');
+            try {
+                const response = await fetch(`${API_URL}/list_appointments/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ date: '2026-03-17' })
+                });
+                
+                log(`📡 Response status: ${response.status} ${response.statusText}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                log(`✅ Success! Found ${data.length} appointments`, 'success');
+                log(`📊 Data: ${JSON.stringify(data, null, 2)}`, 'success');
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                log(`❌ Details: ${error.stack}`, 'error');
+            }
+        }
+        
+        async function testSchedule() {
+            log('🔄 Testing schedule_appointment endpoint...');
+            try {
+                const response = await fetch(`${API_URL}/schedule_appointment/`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        patient_name: 'Test User',
+                        reason: 'Connection Test',
+                        start_time: '2026-03-17T15:00:00'
+                    })
+                });
+                
+                log(`📡 Response status: ${response.status} ${response.statusText}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                log(`✅ Appointment scheduled successfully!`, 'success');
+                log(`📊 Data: ${JSON.stringify(data, null, 2)}`, 'success');
+                
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                log(`❌ Details: ${error.stack}`, 'error');
+            }
+        }
+        
+        // Auto-test on page load
+        window.onload = () => {
+            log('🚀 Page loaded. Testing connection...');
+            setTimeout(testAPI, 1000);
+        };
+    </script>
+</body>
+</html>
