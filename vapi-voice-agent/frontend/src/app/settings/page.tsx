@@ -33,7 +33,10 @@ export default function SettingsPage() {
         try {
             const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/settings/", {
                 method: "GET",
-                headers: { "Content-Type": "application/json" }
+                headers: { 
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "true" 
+                }
             });
             const data = await response.json();
             setStartHour(data.start_hour ?? 12);
@@ -58,7 +61,10 @@ export default function SettingsPage() {
         try {
             const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/settings/", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: { 
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "true" 
+                },
                 body: JSON.stringify({
                     start_hour: startHour,
                     end_hour: endHour,
