@@ -59,9 +59,10 @@ export function MainChartArea({
             const currentDate = new Date(today);
             currentDate.setDate(today.getDate() + i);
 
+            const dayName = currentDate.toLocaleString('default', { weekday: 'short' });
             const month = currentDate.toLocaleString('default', { month: 'short' });
-            const day = currentDate.getDate();
-            const label = `${month} ${day}`;
+            const dayNum = currentDate.getDate();
+            const label = `${dayName} ${dayNum}`;
             
             // Format to YYYY-MM-DD to match incoming times where possible, or just parse
             const currentDateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
