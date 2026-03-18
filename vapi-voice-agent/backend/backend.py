@@ -6,8 +6,17 @@ import os
 # Add the parent directory (vapi-voice-agent root) to the system path so it can import the 'database' package
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from database.database import init_db, Appointment, ClinicSettings, get_db
+from database.database import init_db, Appointment, ClinicSettings, User, get_db
+from passlib.context import CryptContext
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def get_password_hash(password):
+    # Truncate to 72 bytes to avoid passlib/bcrypt ValueError
+    return pwd_context.hash(password[:72])
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password[:72], hashed_password)
 
 init_db()
 
@@ -51,6 +60,21 @@ class UpdateClinicSettingsRequest(BaseModel):
     slot_duration_minutes: int
     working_days: str
     holidays: str
+
+# Auth Models
+class SignUpRequest(BaseModel):
+    name: str
+    email: str
+    password: str
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+class UserResponse(BaseModel):
+    name: str
+    email: str
+    isLoggedIn: bool = True
 
 # Step2: Create FastAPI application and endpoints pseudo code
 
@@ -106,6 +130,38 @@ async def websocket_endpoint(websocket: WebSocket):
             await manager.send_personal_message(f"Received: {data}", websocket)
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+
+# Auth Endpoints
+from sqlalchemy import select
+
+@app.post("/auth/signup", response_model=UserResponse)
+def signup(request: SignUpRequest, db: Session = Depends(get_db)):
+    # Check if user already exists
+    stmt = select(User).where(User.email == request.email)
+    existing_user = db.execute(stmt).scalars().first()
+    if existing_user:
+        raise HTTPException(status_code=400, detail="A user with this email already exists.")
+    
+    new_user = User(
+        name=request.name,
+        email=request.email,
+        password_hash=get_password_hash(request.password)
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    
+    return UserResponse(name=new_user.name, email=new_user.email)
+
+@app.post("/auth/login", response_model=UserResponse)
+def login(request: LoginRequest, db: Session = Depends(get_db)):
+    stmt = select(User).where(User.email == request.email)
+    user = db.execute(stmt).scalars().first()
+    
+    if not user or not verify_password(request.password, user.password_hash):
+        raise HTTPException(status_code=401, detail="Invalid email or password.")
+    
+    return UserResponse(name=user.name, email=user.email)
 
 # settings
 @app.get("/settings/", response_model=ClinicSettingsResponse)

@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { Calendar, Clock, User, Stethoscope, Search, RefreshCw } from "lucide-react";
+import { API_BASE_URL } from "@/config";
 
 type Appointment = {
     id: number;
@@ -23,10 +24,10 @@ export default function AppointmentsPage() {
 
     const fetchAppointments = useCallback(async (date: string) => {
         console.log(`🔄 Fetching appointments for date: ${date}`);
-        console.log(`🌐 API URL: https://spleenish-ivan-unfrothing.ngrok-free.dev/list_appointments/`);
+        console.log(`🌐 API URL: ${API_BASE_URL}/list_appointments/`);
         setLoading(true);
         try {
-            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/list_appointments/?cb=1", {
+            const response = await fetch(`${API_BASE_URL}/list_appointments/?cb=1`, {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",

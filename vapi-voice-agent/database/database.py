@@ -34,6 +34,14 @@ class ClinicSettings(Base):
     working_days = Column(String, default="0,1,2,3,4,5") # Mon(0) to Sat(5)
     holidays = Column(String, default="") # comma-separated list of YYYY-MM-DD
 
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    email = Column(String, unique=True, index=True)
+    password_hash = Column(String)
+    created_at = Column(DateTime, default=dt.datetime.utcnow)
+
 
 def init_db() -> None:
     Base.metadata.create_all(bind=engine)

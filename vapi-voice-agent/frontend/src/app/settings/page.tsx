@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
+import { API_BASE_URL } from "@/config";
 
 export default function SettingsPage() {
     const [startHour, setStartHour] = useState(12);
@@ -31,7 +32,7 @@ export default function SettingsPage() {
     const fetchSettings = async () => {
         setLoading(true);
         try {
-            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/settings/?cb=1", {
+            const response = await fetch(`${API_BASE_URL}/settings/?cb=1`, {
                 method: "GET",
                 headers: { 
                     "Content-Type": "application/json",
@@ -59,7 +60,7 @@ export default function SettingsPage() {
         setSaving(true);
         setMessage("");
         try {
-            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/settings/?cb=1", {
+            const response = await fetch(`${API_BASE_URL}/settings/?cb=1`, {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",

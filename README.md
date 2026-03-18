@@ -28,10 +28,11 @@ vapi-voice-agent/
 
 - 🎙️ **AI Voice Agent** — Patients can book and cancel appointments via phone call using VAPI
 - 📅 **Appointment Scheduling** — Enforces doctor's working hours, slot durations, holidays, and a 10-day booking window
-- ⚙️ **Clinic Settings** — Doctors can configure start/end hours, slot duration, working days, and holidays from the dashboard
-- 📊 **Live Dashboard** — Charts showing appointments for the next 10 days
-- 🗓️ **Appointments Page** — View all appointments with search and date filtering
-- ❌ **Cancellation Support** — Voice agent and dashboard both support appointment cancellations
+- 📖 **Clinical Guidelines** — Searchable library of medical protocols for Heart Disease, Kidney Failure, Cancer, and more
+- 👤 **Account Settings** — Profile management for medical professionals with personal and contact information
+- 🔐 **Secure Authentication** — Dedicated login and signup system for clinic staff
+- ⚙️ **Clinic Settings** — Configure working hours, slot duration, and holidays from the dashboard
+- 📊 **Live Dashboard** — Real-time charts and summaries of upcoming appointments
 
 ---
 
@@ -65,13 +66,13 @@ python backend.py
 # Server runs on http://127.0.0.1:4444
 ```
 
-### 2. Expose Backend with ngrok
+### 2. Expose Backend with ngrok (Optional)
 
+If you need to access the API remotely or via VAPI:
 ```bash
 ngrok http 4444
 ```
-
-Copy the generated HTTPS URL and update the API URL in your frontend and VAPI settings.
+Copy the generated URL and update it in `frontend/src/config.ts`.
 
 ### 3. Frontend (Next.js)
 
@@ -107,12 +108,12 @@ npm run dev
 
 ---
 
-## 📋 Environment
+## 📋 Environment Configuration
 
-Update the ngrok URL in:
-- `frontend/src/app/page.tsx`
-- `frontend/src/app/appointments/page.tsx`
-- `frontend/src/app/settings/page.tsx`
+Centralized API management is handled in:
+- `frontend/src/config.ts`
+
+Simply update the `API_BASE_URL` in this file to switch between local development and a production/ngrok endpoint.
 
 ---
 

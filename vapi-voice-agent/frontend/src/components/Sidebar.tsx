@@ -10,16 +10,19 @@ import {
     AlertTriangle,
     Clock,
     Stethoscope,
+    LogIn,
+    BookOpen,
 } from "lucide-react";
 
 export function Sidebar() {
     const pathname = usePathname();
-
     const menuItems = [
         { name: "Dashboard", icon: LayoutDashboard, href: "/" },
         { name: "Recent Appointments", icon: CalendarClock, href: "/appointments" },
-        { name: "Account", icon: Users, href: "#" },
+        { name: "Account", icon: Users, href: "/account" },
         { name: "Time Scheduling", icon: Clock, href: "/settings" },
+        { name: "Clinical Guidelines", icon: BookOpen, href: "/guidelines" },
+        { name: "Sign In", icon: LogIn, href: "/login" },
     ];
 
     return (

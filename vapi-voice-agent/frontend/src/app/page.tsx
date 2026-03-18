@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { Header } from "@/components/Header";
 import { TopSummaryCards } from "@/components/TopSummaryCards";
 import { MainChartArea } from "@/components/MainChartArea";
+import { API_BASE_URL } from "@/config";
 
 type Appointment = {
     id: number;
@@ -27,7 +28,7 @@ export default function Dashboard() {
         setLoading(true);
         try {
             // Fetch Settings first to get holidays
-            const settingsRes = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/settings/?cb=1", {
+            const settingsRes = await fetch(`${API_BASE_URL}/settings/?cb=1`, {
                 headers: { "ngrok-skip-browser-warning": "true" }
             });
             const settingsData = await settingsRes.json();
@@ -40,7 +41,7 @@ export default function Dashboard() {
 
             const today = new Date().toLocaleDateString('en-CA');
             console.log(`Dashboard: Today's date = ${today}`);
-            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/list_appointments/?cb=1", {
+            const response = await fetch(`${API_BASE_URL}/list_appointments/?cb=1`, {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
