@@ -7,23 +7,23 @@ An AI-powered voice assistant and clinic management dashboard for scheduling, ma
 ## 📁 Project Structure
 
 ```
-AI_VOICE_AGENT/
-├── vapi-voice-agent-backend/
-│   ├── backend.py          # FastAPI backend server
-│   ├── database.py         # SQLAlchemy models & DB setup
-│   ├── frontend/           # Next.js dashboard (React)
-│   │   └── src/
-│   │       ├── app/
-│   │       │   ├── page.tsx                  # Main dashboard
-│   │       │   ├── appointments/page.tsx     # All appointments view
-│   │       │   └── settings/page.tsx         # Clinic settings page
-│   │       └── components/
-│   │           ├── Sidebar.tsx
-│   │           ├── Header.tsx
-│   │           ├── MainChartArea.tsx
-│   │           └── TopSummaryCards.tsx
-│   └── backend/            # NestJS backend (legacy)
-└── main.py
+vapi-voice-agent/
+├── backend.py          # FastAPI backend server
+├── database.py         # SQLAlchemy models & DB setup
+├── frontend/           # Next.js dashboard (React)
+│   └── src/
+│       ├── app/
+│       │   ├── page.tsx                  # Main dashboard
+│       │   ├── appointments/page.tsx     # All appointments view
+│       │   └── settings/page.tsx         # Clinic settings page
+│       └── components/
+│           ├── Sidebar.tsx
+│           ├── Header.tsx
+│           ├── MainChartArea.tsx
+│           └── TopSummaryCards.tsx
+├── backend/            # NestJS backend (legacy)
+├── main.py             # Entry point
+└── README.md           # Project documentation
 ```
 
 ---
@@ -55,7 +55,7 @@ AI_VOICE_AGENT/
 ### 1. Backend (FastAPI)
 
 ```bash
-cd vapi-voice-agent-backend
+# Ensure you are in the vapi-voice-agent directory
 
 # Create virtual environment
 python -m venv .venv
@@ -80,7 +80,7 @@ Copy the generated HTTPS URL and update the API URL in your frontend and VAPI se
 ### 3. Frontend (Next.js)
 
 ```bash
-cd vapi-voice-agent-backend/frontend
+cd frontend
 
 npm install
 npm run dev
