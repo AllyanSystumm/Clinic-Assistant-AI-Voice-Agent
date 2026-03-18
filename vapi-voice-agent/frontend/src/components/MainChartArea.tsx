@@ -79,8 +79,6 @@ export function MainChartArea({
             }).length;
 
             const isHoliday = holidays.includes(currentDateStr);
-            // JS getDay() is 0=Sun, 1=Mon... 
-            // Python weekday() is 0=Mon, 6=Sun
             const jsDay = currentDate.getDay();
             const pythonDay = (jsDay + 6) % 7;
             const isWorkingDay = workingDays.length === 0 || workingDays.includes(pythonDay);
@@ -177,7 +175,7 @@ export function MainChartArea({
                                         return null;
                                     }}
                                 />
-                                <Bar dataKey="uv" name="Appointments" radius={[2, 2, 0, 0]} barSize={40}>
+                                <Bar dataKey="uv" name="Appointments" radius={[2, 2, 0, 0]} barSize={40} minPointSize={8}>
                                     {chartData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={entry.isClosed ? "#FFD700" : "#8B2635"} />
                                     ))}
