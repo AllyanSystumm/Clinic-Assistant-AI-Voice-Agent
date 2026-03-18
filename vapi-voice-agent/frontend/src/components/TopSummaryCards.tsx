@@ -8,21 +8,7 @@ import {
     ResponsiveContainer, Tooltip, XAxis
 } from "recharts";
 
-// Dummy data for the mini charts
-const visitsData = [
-    { name: '1', uv: 400 },
-    { name: '2', uv: 300 },
-    { name: '3', uv: 200 },
-    { name: '4', uv: 278 },
-    { name: '5', uv: 189 },
-    { name: '6', uv: 239 },
-    { name: '7', uv: 349 },
-    { name: '8', uv: 200 },
-    { name: '9', uv: 278 },
-    { name: '10', uv: 189 },
-    { name: '11', uv: 239 },
-    { name: '12', uv: 349 },
-];
+
 
 const paymentsData = [
     { name: '1', uv: 400 },
@@ -49,7 +35,7 @@ export function TopSummaryCards({
     if (!isMounted) return null; // Prevent hydration mismatch
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
 
             {/* 1. Total Appointments (matches "Total Sales") */}
             <div className="bg-white p-5 rounded-md shadow-sm border border-gray-100 flex flex-col justify-between">
@@ -77,37 +63,7 @@ export function TopSummaryCards({
                 </div>
             </div>
 
-            {/* 2. Volume / Visits (Area Chart) */}
-            <div className="bg-white p-5 rounded-md shadow-sm border border-gray-100 flex flex-col justify-between">
-                <div>
-                    <div className="flex justify-between items-center text-gray-500 mb-2">
-                        <span className="text-sm">Weekly Volume</span>
-                        <Info className="w-4 h-4" />
-                    </div>
-                    <div className="text-3xl font-normal text-gray-800 tracking-tight">
-                        {Math.round(totalAppointments * 0.4).toLocaleString()}
-                    </div>
-                </div>
 
-                <div className="h-12 mt-2">
-                    <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={visitsData}>
-                            <defs>
-                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8} />
-                                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0} />
-                                </linearGradient>
-                            </defs>
-                            <Tooltip cursor={false} contentStyle={{ display: 'none' }} />
-                            <Area type="monotone" dataKey="uv" stroke="#975FE4" fillOpacity={1} fill="url(#colorUv)" />
-                        </AreaChart>
-                    </ResponsiveContainer>
-                </div>
-
-                <div className="border-t border-gray-100 pt-3 text-sm text-gray-600">
-                    Daily Volume: {totalAppointments > 0 ? Math.max(1, Math.round((totalAppointments * 0.4) / 7)) : 0}
-                </div>
-            </div>
 
             {/* 3. Cancellations (matches "Payments" Bar Chart) */}
             <div className="bg-white p-5 rounded-md shadow-sm border border-gray-100 flex flex-col justify-between">
