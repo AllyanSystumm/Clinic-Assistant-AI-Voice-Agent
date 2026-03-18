@@ -31,7 +31,7 @@ export default function SettingsPage() {
     const fetchSettings = async () => {
         setLoading(true);
         try {
-            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/settings/", {
+            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/settings/?cb=1", {
                 method: "GET",
                 headers: { 
                     "Content-Type": "application/json",
@@ -59,7 +59,7 @@ export default function SettingsPage() {
         setSaving(true);
         setMessage("");
         try {
-            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/settings/", {
+            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/settings/?cb=1", {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export default function SettingsPage() {
                 <Header />
                 <div className="p-8">
                     <div className="flex justify-between items-center mb-6">
-                        <h1 className="text-2xl font-bold text-slate-800">Clinic Settings</h1>
+                        <h1 className="text-2xl font-bold text-slate-800">Time Scheduling</h1>
                         <button 
                             onClick={fetchSettings}
                             className="text-sm bg-white border border-slate-200 shadow-sm px-4 py-2 rounded-lg hover:bg-slate-50 transition-colors text-slate-700 font-medium"

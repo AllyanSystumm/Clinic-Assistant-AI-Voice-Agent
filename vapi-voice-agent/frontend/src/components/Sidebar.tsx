@@ -21,7 +21,7 @@ export function Sidebar() {
         { name: "Recent Appointments", icon: CalendarClock, href: "/appointments" },
         { name: "Exception", icon: AlertTriangle, href: "#" },
         { name: "Account", icon: Users, href: "#" },
-        { name: "Settings", icon: Settings, href: "/settings" },
+        { name: "Time Scheduling", icon: Settings, href: "/settings" },
     ];
 
     return (

@@ -26,7 +26,7 @@ export default function Dashboard() {
         try {
             const today = new Date().toLocaleDateString('en-CA');
             console.log(`Dashboard: Today's date = ${today}`);
-            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/list_appointments/", {
+            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/list_appointments/?cb=1", {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",

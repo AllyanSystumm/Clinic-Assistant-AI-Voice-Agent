@@ -26,7 +26,7 @@ export default function AppointmentsPage() {
         console.log(`🌐 API URL: https://spleenish-ivan-unfrothing.ngrok-free.dev/list_appointments/`);
         setLoading(true);
         try {
-            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/list_appointments/", {
+            const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/list_appointments/?cb=1", {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json",
