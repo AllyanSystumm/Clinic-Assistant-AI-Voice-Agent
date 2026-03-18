@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts";
 import { Calendar as CalendarIcon } from "lucide-react";
 
 const monthlyData = [
@@ -36,7 +36,7 @@ type Appointment = {
     created_at: string;
 };
 
-export function MainChartArea({ appointments = [] }: { appointments?: Appointment[] }) {
+export function MainChartArea({ appointments = [], holidays = [] }: { appointments?: Appointment[], holidays?: string[] }) {
     const [activeTab, setActiveTab] = useState("Sales"); // Keeping name matches original 'Sales', but we'll show 'Appointments' conceptually
     const [timeRange, setTimeRange] = useState("Next 10 Days");
 
@@ -69,7 +69,8 @@ export function MainChartArea({ appointments = [] }: { appointments?: Appointmen
                 );
             }).length;
 
-            data.push({ name: label, uv: count });
+            const isHoliday = holidays.includes(currentDateStr);
+            data.push({ name: label, uv: count, isHoliday });
         }
         return data;
     };
@@ -137,7 +138,11 @@ export function MainChartArea({ appointments = [] }: { appointments?: Appointmen
                                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#8c8c8c', fontSize: 12 }} dy={10} />
                                 <YAxis axisLine={false} tickLine={false} tick={{ fill: '#8c8c8c', fontSize: 12 }} />
                                 <Tooltip cursor={{ fill: '#f5f5f5' }} itemStyle={{ color: '#000' }} />
-                                <Bar dataKey="uv" name="Appointments" fill="#8B2635" radius={[2, 2, 0, 0]} barSize={40} />
+                                <Bar dataKey="uv" name="Appointments" radius={[2, 2, 0, 0]} barSize={40}>
+                                    {chartData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.isHoliday ? "#FFD700" : "#8B2635"} />
+                                    ))}
+                                </Bar>
                             </BarChart>
                         </ResponsiveContainer>
                     </div>

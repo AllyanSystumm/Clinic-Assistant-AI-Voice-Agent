@@ -17,6 +17,7 @@ type Appointment = {
 
 export default function Dashboard() {
     const [appointments, setAppointments] = useState<Appointment[]>([]);
+    const [holidays, setHolidays] = useState<string[]>([]);
     const [loading, setLoading] = useState(false);
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
@@ -24,6 +25,15 @@ export default function Dashboard() {
         console.log('Dashboard: Fetching appointments for today');
         setLoading(true);
         try {
+            // Fetch Settings first to get holidays
+            const settingsRes = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/settings/?cb=1", {
+                headers: { "ngrok-skip-browser-warning": "true" }
+            });
+            const settingsData = await settingsRes.json();
+            if (settingsData.holidays) {
+                setHolidays(settingsData.holidays.split(',').map((h: string) => h.trim()));
+            }
+
             const today = new Date().toLocaleDateString('en-CA');
             console.log(`Dashboard: Today's date = ${today}`);
             const response = await fetch("https://spleenish-ivan-unfrothing.ngrok-free.dev/list_appointments/?cb=1", {
@@ -39,7 +49,7 @@ export default function Dashboard() {
             setAppointments(Array.isArray(data) ? data : []);
             setLastUpdated(new Date());
         } catch (error) {
-            console.error("Failed to fetch appointments:", error);
+            console.error("Failed to fetch dashboard data:", error);
         } finally {
             setLoading(false);
         }
@@ -70,7 +80,7 @@ export default function Dashboard() {
                         totalCanceled={totalCanceled}
                     />
 
-                    <MainChartArea appointments={appointments} />
+                    <MainChartArea appointments={appointments} holidays={holidays} />
 
                 </main>
             </div>
