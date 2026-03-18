@@ -136,8 +136,8 @@ export function MainChartArea({ appointments = [] }: { appointments?: Appointmen
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#8c8c8c', fontSize: 12 }} dy={10} />
                                 <YAxis axisLine={false} tickLine={false} tick={{ fill: '#8c8c8c', fontSize: 12 }} />
-                                <Tooltip cursor={{ fill: '#f5f5f5' }} />
-                                <Bar dataKey="uv" fill="#8B2635" radius={[2, 2, 0, 0]} barSize={40} />
+                                <Tooltip cursor={{ fill: '#f5f5f5' }} itemStyle={{ color: '#000' }} />
+                                <Bar dataKey="uv" name="Appointments" fill="#8B2635" radius={[2, 2, 0, 0]} barSize={40} />
                             </BarChart>
                         </ResponsiveContainer>
                     </div>
