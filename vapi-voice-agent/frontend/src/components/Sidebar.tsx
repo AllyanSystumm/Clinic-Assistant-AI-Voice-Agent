@@ -17,9 +17,7 @@ export function Sidebar() {
 
     const menuItems = [
         { name: "Dashboard", icon: LayoutDashboard, href: "/" },
-        { name: "Form", icon: FileText, href: "#" },
         { name: "Recent Appointments", icon: CalendarClock, href: "/appointments" },
-        { name: "Exception", icon: AlertTriangle, href: "#" },
         { name: "Account", icon: Users, href: "#" },
         { name: "Time Scheduling", icon: Clock, href: "/settings" },
     ];

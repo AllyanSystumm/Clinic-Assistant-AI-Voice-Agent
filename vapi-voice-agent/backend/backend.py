@@ -127,28 +127,27 @@ def get_settings(db: Session = Depends(get_db)):
 
 @app.post("/settings/", response_model=ClinicSettingsResponse)
 def update_settings(request: UpdateClinicSettingsRequest, db: Session = Depends(get_db)):
-    from sqlalchemy import select
-    settings = db.execute(select(ClinicSettings)).scalar_one_or_none()
-    if not settings:
-        settings = ClinicSettings()
-        db.add(settings)
+    try:
+        from sqlalchemy import select
+        settings = db.execute(select(ClinicSettings)).scalars().first()
+        if not settings:
+            settings = ClinicSettings()
+            db.add(settings)
 
-    settings.start_hour = request.start_hour
-    settings.end_hour = request.end_hour
-    settings.slot_duration_minutes = request.slot_duration_minutes
-    settings.working_days = request.working_days
-    settings.holidays = request.holidays
+        settings.start_hour = request.start_hour
+        settings.end_hour = request.end_hour
+        settings.slot_duration_minutes = request.slot_duration_minutes
+        settings.working_days = request.working_days
+        settings.holidays = request.holidays
 
-    db.commit()
-    db.refresh(settings)
-    
-    return ClinicSettingsResponse(
-        start_hour=settings.start_hour,
-        end_hour=settings.end_hour,
-        slot_duration_minutes=settings.slot_duration_minutes,
-        working_days=settings.working_days,
-        holidays=settings.holidays
-    )
+        db.commit()
+        db.refresh(settings)
+        
+        return settings
+    except Exception as e:
+        print(f"Error in update_settings: {e}")
+        db.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
 
 # schedule appt
 @app.post("/schedule_appointment/")
