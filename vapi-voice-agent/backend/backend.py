@@ -1,6 +1,12 @@
 # Step1: Import Database objects
 
-from database import init_db, Appointment, ClinicSettings, get_db
+import sys
+import os
+
+# Add the parent directory (vapi-voice-agent root) to the system path so it can import the 'database' package
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from database.database import init_db, Appointment, ClinicSettings, get_db
 
 
 init_db()

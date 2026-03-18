@@ -8,21 +8,17 @@ An AI-powered voice assistant and clinic management dashboard for scheduling, ma
 
 ```
 vapi-voice-agent/
-├── backend.py          # FastAPI backend server
-├── database.py         # SQLAlchemy models & DB setup
-├── frontend/           # Next.js dashboard (React)
-│   └── src/
-│       ├── app/
-│       │   ├── page.tsx                  # Main dashboard
-│       │   ├── appointments/page.tsx     # All appointments view
-│       │   └── settings/page.tsx         # Clinic settings page
-│       └── components/
-│           ├── Sidebar.tsx
-│           ├── Header.tsx
-│           ├── MainChartArea.tsx
-│           └── TopSummaryCards.tsx
-├── backend/            # NestJS backend (legacy)
-├── main.py             # Entry point
+├── backend/            # FastAPI backend layer (Python)
+│   ├── backend.py
+│   ├── main.py
+│   ├── pyproject.toml
+│   └── ...
+├── frontend/           # Next.js dashboard layer (React)
+│   └── ...
+├── database/           # Database layer (SQLAlchemy + SQLite)
+│   ├── database.py
+│   └── appointments_db.db
+├── legacy_nestjs_backend/ # Old NestJS backend
 └── README.md           # Project documentation
 ```
 
@@ -55,7 +51,7 @@ vapi-voice-agent/
 ### 1. Backend (FastAPI)
 
 ```bash
-# Ensure you are in the vapi-voice-agent directory
+cd backend
 
 # Create virtual environment
 python -m venv .venv

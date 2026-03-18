@@ -1,8 +1,11 @@
-from __future__ import annotations
-
+import sys
+import os
 from sqlalchemy import text
 
-from database import engine#, init_db
+# Add the parent directory (vapi-voice-agent root) to the system path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from database.database import engine
 
 
 def run_sql(query: str):
