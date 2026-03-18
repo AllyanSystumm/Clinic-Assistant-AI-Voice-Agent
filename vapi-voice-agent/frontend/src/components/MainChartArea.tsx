@@ -36,7 +36,15 @@ type Appointment = {
     created_at: string;
 };
 
-export function MainChartArea({ appointments = [], holidays = [] }: { appointments?: Appointment[], holidays?: string[] }) {
+export function MainChartArea({
+    appointments = [],
+    holidays = [],
+    workingDays = []
+}: {
+    appointments?: Appointment[],
+    holidays?: string[],
+    workingDays?: number[]
+}) {
     const [activeTab, setActiveTab] = useState("Sales"); // Keeping name matches original 'Sales', but we'll show 'Appointments' conceptually
     const [timeRange, setTimeRange] = useState("Next 10 Days");
 
@@ -70,7 +78,16 @@ export function MainChartArea({ appointments = [], holidays = [] }: { appointmen
             }).length;
 
             const isHoliday = holidays.includes(currentDateStr);
-            data.push({ name: label, uv: count, isHoliday });
+            // JS getDay() is 0=Sun, 1=Mon... 
+            // Python weekday() is 0=Mon, 6=Sun
+            const jsDay = currentDate.getDay();
+            const pythonDay = (jsDay + 6) % 7;
+            const isWorkingDay = workingDays.length === 0 || workingDays.includes(pythonDay);
+            
+            const isClosed = isHoliday || !isWorkingDay;
+            const statusLabel = isHoliday ? "Holiday" : (!isWorkingDay ? "Closed" : null);
+
+            data.push({ name: label, uv: count, isClosed, statusLabel });
         }
         return data;
     };
@@ -137,10 +154,31 @@ export function MainChartArea({ appointments = [], holidays = [] }: { appointmen
                                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fill: '#8c8c8c', fontSize: 12 }} dy={10} />
                                 <YAxis axisLine={false} tickLine={false} tick={{ fill: '#8c8c8c', fontSize: 12 }} />
-                                <Tooltip cursor={{ fill: '#f5f5f5' }} itemStyle={{ color: '#000' }} />
+                                <Tooltip 
+                                    cursor={{ fill: '#f5f5f5' }} 
+                                    content={({ active, payload, label }) => {
+                                        if (active && payload && payload.length) {
+                                            const data = payload[0].payload;
+                                            return (
+                                                <div className="bg-white p-3 border border-gray-100 shadow-sm rounded">
+                                                    <p className="text-gray-500 text-xs mb-1">{label}</p>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-black font-medium text-sm">Appointments : {data.uv}</span>
+                                                        {data.statusLabel && (
+                                                            <span className="text-yellow-600 bg-yellow-50 px-1.5 py-0.5 rounded text-[10px] font-bold uppercase">
+                                                                {data.statusLabel}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            );
+                                        }
+                                        return null;
+                                    }}
+                                />
                                 <Bar dataKey="uv" name="Appointments" radius={[2, 2, 0, 0]} barSize={40}>
                                     {chartData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={entry.isHoliday ? "#FFD700" : "#8B2635"} />
+                                        <Cell key={`cell-${index}`} fill={entry.isClosed ? "#FFD700" : "#8B2635"} />
                                     ))}
                                 </Bar>
                             </BarChart>

@@ -18,6 +18,7 @@ type Appointment = {
 export default function Dashboard() {
     const [appointments, setAppointments] = useState<Appointment[]>([]);
     const [holidays, setHolidays] = useState<string[]>([]);
+    const [workingDays, setWorkingDays] = useState<number[]>([]);
     const [loading, setLoading] = useState(false);
     const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
 
@@ -32,6 +33,9 @@ export default function Dashboard() {
             const settingsData = await settingsRes.json();
             if (settingsData.holidays) {
                 setHolidays(settingsData.holidays.split(',').map((h: string) => h.trim()));
+            }
+            if (settingsData.working_days) {
+                setWorkingDays(settingsData.working_days.split(',').map((d: string) => parseInt(d.trim())));
             }
 
             const today = new Date().toLocaleDateString('en-CA');
@@ -80,7 +84,7 @@ export default function Dashboard() {
                         totalCanceled={totalCanceled}
                     />
 
-                    <MainChartArea appointments={appointments} holidays={holidays} />
+                    <MainChartArea appointments={appointments} holidays={holidays} workingDays={workingDays} />
 
                 </main>
             </div>
