@@ -5,7 +5,11 @@ import { Menu, Search, HelpCircle, Bell } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export function Header() {
+interface HeaderProps {
+    title?: string;
+}
+
+export function Header({ title = "Dashboard of Doctor" }: HeaderProps) {
     const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -31,6 +35,9 @@ export function Header() {
                 <button className="text-gray-500 hover:text-gray-900 md:hidden mr-4">
                     <Menu className="w-5 h-5" />
                 </button>
+                <h1 className="text-xl font-bold text-gray-800 tracking-tight">
+                    {title}
+                </h1>
             </div>
 
             <div className="flex items-center gap-4 md:gap-6 text-gray-500">
@@ -60,7 +67,7 @@ export function Header() {
                 <div className="flex items-center gap-3">
                     {isLoggedIn && (
                         <Link 
-                            href="/login"
+                            href="/account"
                             className="flex items-center gap-2 cursor-pointer hover:bg-gray-50 px-2 py-1 rounded-md transition-colors group"
                         >
                             <div className="w-8 h-8 rounded-full bg-[#fde8e9] flex items-center justify-center overflow-hidden group-hover:ring-2 group-hover:ring-[#8B2635]/20">
@@ -69,7 +76,7 @@ export function Header() {
                                     <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
                                 </svg>
                             </div>
-                            <span className="text-sm text-gray-700 font-medium group-hover:text-[#8B2635]">Dashboard</span>
+                            <span className="text-sm text-gray-700 font-bold group-hover:text-[#8B2635] tracking-wide">Dashboard of Doctor</span>
                         </Link>
                     )}
 
